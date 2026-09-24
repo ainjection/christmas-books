@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Christmas at The Gentle Bookshop</title>
+<meta name="description" content="Cosy, twinkly and full of festive fun: Christmas seek and find and grayscale colouring books from The Gentle Bookshop.">
+<meta property="og:title" content="The Christmas Shelf | The Gentle Bookshop">
+<meta property="og:description" content="Cosy, twinkly and full of festive fun. Christmas seek and find and grayscale colouring books.">
+<meta property="og:image" content="https://ainjection.github.io/christmas-books/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 5 L85 70 H15Z' fill='%232f8f4e'/%3E%3Crect x='42' y='70' width='16' height='20' fill='%238a5a36'/%3E%3Ccircle cx='50' cy='8' r='8' fill='%23ffd23f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Nunito:wght@400;700;800;900&display=swap">
+<style>
+:root{--night:#0a1630;--navy:#13264d;--snow:#f4f8ff;--red:#d7263d;--red-d:#9e1628;--gold:#ffd23f;--green:#2f8f4e;--ink:#eef3ff;--muted:#b6c4e0;
+  --display:"Mountains of Christmas","Georgia",serif;--body:"Nunito","Segoe UI",system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+html,body{margin:0;background:var(--night);color:var(--ink);font-family:var(--body)}
+a{color:inherit}
+.nav{position:fixed;z-index:50;top:0;left:0;right:0;display:flex;align-items:center;gap:16px;padding:12px clamp(16px,4vw,44px);padding-top:calc(12px + env(safe-area-inset-top,0px));background:linear-gradient(rgba(10,22,48,.9),rgba(10,22,48,0));pointer-events:none}
+.nav>*{pointer-events:auto}
+.brand{font-family:var(--display);font-size:1.6rem;color:var(--snow);text-decoration:none;margin-right:auto;text-shadow:0 0 12px rgba(255,210,63,.4)}
+.links{display:flex;gap:18px;font-weight:800;font-size:.92rem}.links a{text-decoration:none;color:var(--muted)}.links a:hover{color:var(--gold)}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(182,196,224,.35);border-radius:999px;padding:6px 14px;font:800 .85rem var(--body);background:rgba(19,38,77,.7);color:var(--ink);cursor:pointer;white-space:nowrap}
+.pill b{color:var(--gold)}.pill:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (max-width:980px){.links{display:none}}@media (max-width:520px){.hide-sm{display:none}.nav{gap:8px}.brand{font-size:1.2rem}}
+
+.intro{position:fixed;inset:0;z-index:100;background:#040914;display:grid;place-items:center;cursor:pointer}
+.intro .istar{width:120px;opacity:0;animation:starOn 1s .3s forwards}
+.intro .say{position:absolute;bottom:18vh;left:0;right:0;text-align:center;font-family:var(--display);font-size:1.6rem;color:#9fb2d6;opacity:0;animation:starOn .6s 1s forwards}
+.intro.open{animation:openUp 1.3s cubic-bezier(.7,0,.3,1) forwards}.intro.gone{display:none}
+@keyframes starOn{from{opacity:0;transform:scale(.3) rotate(-90deg)}to{opacity:1;transform:none}}
+@keyframes openUp{from{clip-path:circle(150% at 50% 50%)}to{clip-path:circle(0% at 50% 40%)}}
+
+.hero{position:relative;height:100vh;min-height:680px;overflow:hidden;isolation:isolate;background:radial-gradient(120% 90% at 70% 10%,#244a8a 0%,var(--navy) 40%,var(--night) 80%)}
+#snow{position:absolute;inset:0;z-index:7;pointer-events:none}
+.moon{position:absolute;right:9vw;top:9vh;width:clamp(110px,14vw,210px);aspect-ratio:1;border-radius:50%;z-index:1;background:radial-gradient(circle at 38% 36%,#fffef4 0%,#f3f0dc 50%,#d6d0b0 100%);box-shadow:0 0 70px 20px rgba(240,240,220,.3)}
+.skyline{position:absolute;left:0;right:0;bottom:0;z-index:3;width:100%;height:48vh}
+.light{animation:tw 1.6s infinite alternate}
+@keyframes tw{from{opacity:.35}to{opacity:1}}
+.char{position:absolute;pointer-events:none}
+#sleigh{z-index:2;top:14vh;left:0;width:340px;transform:translateX(-400px)}
+#snowman{z-index:9;bottom:2vh;left:0;width:150px;transform:translateX(-200px);pointer-events:auto;cursor:pointer}
+#elf{z-index:12;bottom:-6px;left:36vw;width:130px;transform:translateY(105%);transition:transform .7s cubic-bezier(.34,1.5,.6,1);pointer-events:auto;cursor:pointer}
+#elf.up{transform:translateY(0)}
+#elf .bub{position:absolute;left:80%;top:-6px;font:900 1.1rem var(--body);color:var(--red-d);background:#fff;padding:3px 10px;border-radius:14px;opacity:0;transform:scale(.4);transition:all .3s .7s;white-space:nowrap}
+#elf.up .bub{opacity:1;transform:scale(1) rotate(6deg)}
+#robin{z-index:9;right:5vw;bottom:34px;width:70px;pointer-events:auto;cursor:pointer}
+.presents{position:absolute;bottom:1.5vh;left:3vw;z-index:9;display:flex;gap:10px;align-items:flex-end;pointer-events:none}
+.copy{position:absolute;z-index:12;left:clamp(16px,6vw,96px);top:50%;transform:translateY(-58%);max-width:min(520px,88vw)}
+.kicker{font-weight:900;letter-spacing:.18em;text-transform:uppercase;font-size:.8rem;color:var(--gold)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(3rem,7vw,5.8rem);line-height:.95;margin:.25em 0 .25em;color:var(--snow);text-shadow:0 0 22px rgba(160,190,255,.5),0 4px 0 #061022}
+h1 span{color:var(--red);text-shadow:0 0 24px rgba(215,38,61,.6),0 4px 0 #3a0610}
+.copy p{font-size:clamp(1rem,1.4vw,1.2rem);line-height:1.55;color:var(--muted);margin:0 0 1.4em;max-width:44ch}
+.cta{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;background:var(--red);color:#fff;font-weight:900;text-decoration:none;box-shadow:0 0 0 4px rgba(215,38,61,.25),0 10px 30px rgba(215,38,61,.35);transition:transform .2s}
+.cta:hover{transform:translateY(-2px) scale(1.03)}.cta:focus-visible{outline:3px solid var(--snow);outline-offset:3px}
+.cta.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px rgba(238,243,255,.45);margin-left:10px}
+.carousel-wrap{position:absolute;z-index:11;right:clamp(0px,4vw,80px);top:50%;transform:translateY(-46%);width:min(620px,56vw);height:420px;perspective:1300px}
+.ring{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+.book{position:absolute;width:150px;height:200px;margin:-100px 0 0 -75px;transform-style:preserve-3d;cursor:pointer;text-decoration:none}
+.book .cover{position:absolute;inset:0;border-radius:4px 8px 8px 4px;overflow:hidden;background:#fff;box-shadow:0 18px 40px rgba(0,0,0,.6),0 0 24px rgba(255,210,63,.2);transition:transform .35s;backface-visibility:hidden}
+.book .cover img{width:100%;height:100%;object-fit:cover;display:block}
+.book:hover .cover{transform:translateZ(40px) scale(1.06)}
+.peek{position:absolute;left:50%;top:0;width:78px;margin-left:-39px;transform:translateY(20%) translateZ(-6px);transition:transform .45s cubic-bezier(.34,1.8,.5,1);pointer-events:none}
+.book.peeking .peek{transform:translateY(-52%) translateZ(-6px)}
+.book:hover .peek{transform:translateY(-92%) translateZ(-6px) rotate(-6deg)}
+.hint{position:absolute;z-index:12;left:50%;bottom:16px;transform:translateX(-50%);font-size:.8rem;color:var(--muted);letter-spacing:.08em;white-space:nowrap}
+.jumper{position:absolute;z-index:30;left:50%;top:50%;width:260px;margin:-150px 0 0 -130px;opacity:0;pointer-events:none}
+.jumper.go{animation:jump 2.6s cubic-bezier(.3,.1,.2,1) forwards}
+@keyframes jump{0%{opacity:0;transform:scale(.15) translateY(80px)}35%{opacity:1;transform:scale(1.1)}60%{opacity:1;transform:scale(1.2) rotate(-4deg)}100%{opacity:0;transform:scale(2.6) translateY(-60px)}}
+.jumper .say{position:absolute;left:95%;top:10%;font-family:var(--display);font-size:2.6rem;color:var(--snow);white-space:nowrap;text-shadow:0 0 18px rgba(255,210,63,.9)}
+@media (max-width:820px){.copy{top:auto;bottom:47vh;transform:none}.carousel-wrap{left:50%;right:auto;top:auto;bottom:6vh;transform:translateX(-50%);width:100vw;height:300px}.book{width:110px;height:146px;margin:-73px 0 0 -55px}.peek{width:58px;margin-left:-29px}.presents{display:none}.cta.alt{margin:10px 0 0}}
+
+.lane{position:relative;background:linear-gradient(var(--night),#0e1d3d 40%,var(--night))}
+.chapter{position:relative;max-width:1180px;margin:0 auto;padding:110px clamp(16px,5vw,56px) 70px;display:grid;gap:44px}
+.chapter-head{max-width:640px}
+.chapter h2{font-family:var(--display);font-weight:700;font-size:clamp(2.4rem,5vw,3.8rem);line-height:1;margin:.1em 0 14px;color:var(--snow);text-wrap:balance}
+.chapter h2 em{font-style:normal;color:var(--red)}
+.chapter p{color:var(--muted);line-height:1.65;font-size:1.05rem;margin:0;max-width:60ch}
+.split{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(24px,4vw,56px);align-items:center}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:24px}
+.card{display:grid;gap:10px;color:var(--ink)}
+.card .cw{position:relative}
+.card .cw .pk{position:absolute;left:50%;top:0;width:58px;margin-left:-29px;transform:translateY(12%);transition:transform .45s cubic-bezier(.34,1.8,.5,1);z-index:0;pointer-events:none}
+.card .cw>a{position:relative;z-index:1;display:block}
+.card:hover .cw .pk{transform:translateY(-64%) rotate(-8deg)}
+.card .tilt{border-radius:6px 10px 10px 6px;overflow:hidden;aspect-ratio:1000/1293;background:#fff;box-shadow:0 20px 40px rgba(0,0,0,.55);transition:transform .2s}
+.card:hover .tilt{transform:translateY(-6px) rotate(-1.5deg)}
+.card .tilt img{width:100%;height:100%;object-fit:cover;display:block}
+.card h3{font-size:1rem;margin:4px 0 0;font-weight:800;line-height:1.3}.card h3 a{text-decoration:none;color:inherit}
+.card .who{font-size:.85rem;color:var(--muted)}
+.card .acts{display:flex;flex-wrap:wrap;gap:8px}
+.card .buy{font-size:.85rem;font-weight:800;color:#fff;background:var(--red);padding:8px 16px;border-radius:999px;text-decoration:none}
+.card .dl{font-size:.85rem;font-weight:800;color:var(--ink);border:1px solid rgba(182,196,224,.45);padding:7px 14px;border-radius:999px;text-decoration:none}
+.card .dl:hover{border-color:var(--gold);color:var(--gold)}
+.flipper{position:relative;aspect-ratio:760/983;max-width:460px;justify-self:center;width:100%}
+.flipper img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:8px;background:#fff;box-shadow:0 30px 60px rgba(0,0,0,.6);opacity:0;transform:rotate(-2deg) scale(.96);transition:opacity .5s,transform .5s}
+.flipper img.on{opacity:1;transform:rotate(1.5deg)}
+.flipper .ctrl{position:absolute;left:0;right:0;bottom:-58px;display:flex;justify-content:center;gap:12px;align-items:center;color:var(--muted);font-size:.9rem}
+.round{width:44px;height:44px;border-radius:50%;border:1px solid rgba(182,196,224,.4);background:rgba(19,38,77,.8);color:var(--ink);font-size:1.2rem;cursor:pointer}
+.mosaic-box{display:grid;gap:14px;justify-items:center}
+.mosaic{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;width:min(460px,100%);padding:14px;background:#081228;border-radius:12px;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.mosaic button{aspect-ratio:1;border-radius:50%;border:1px solid rgba(182,196,224,.35);background:#132447;color:#8fa3c8;font:700 clamp(7px,1.1vw,10px)/1 var(--body);padding:0;cursor:pointer;transition:background .25s,transform .25s}
+.mosaic button.done{color:transparent;border-color:transparent;transform:scale(1.08)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;font-size:.85rem;color:var(--muted)}.legend i{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:-2px}
+.btn{font:800 .9rem var(--body);border-radius:999px;padding:10px 20px;cursor:pointer;border:1px solid rgba(182,196,224,.4);background:rgba(19,38,77,.8);color:var(--ink)}
+.btn.hot{background:var(--red);color:#fff;border-color:transparent}
+.status{min-height:1.4em;font-family:var(--display);color:var(--gold);font-size:1.5rem;text-align:center}
+.brush{position:relative;max-width:480px;justify-self:center;width:100%;border-radius:8px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.6);cursor:crosshair;background:#fff}
+.brush img{display:block;width:100%;height:auto}
+.brush .tint{position:absolute;inset:0;mix-blend-mode:color;opacity:0;transition:opacity .3s;background:radial-gradient(35% 30% at 30% 35%,#d7263d,transparent 70%),radial-gradient(35% 35% at 70% 60%,#2f8f4e,transparent 70%),radial-gradient(40% 30% at 45% 85%,#c98a5a,transparent 70%),radial-gradient(35% 30% at 75% 20%,#ffd23f,transparent 70%),#a0303a;
+  -webkit-mask-image:radial-gradient(circle 120px at var(--bx,50%) var(--by,50%),#000 55%,transparent 100%);mask-image:radial-gradient(circle 120px at var(--bx,50%) var(--by,50%),#000 55%,transparent 100%)}
+.brush:hover .tint{opacity:.9}
+.brush .tip{position:absolute;left:12px;bottom:12px;background:rgba(10,22,48,.8);color:var(--ink);font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:999px}
+.gallery{display:flex;gap:18px;overflow-x:auto;padding:20px 4px 30px}
+.gallery img{flex:0 0 auto;width:210px;border-radius:6px;background:#fff;box-shadow:0 18px 40px rgba(0,0,0,.55);transition:transform .35s}
+.gallery img:nth-child(odd){transform:rotate(-2deg)}.gallery img:nth-child(even){transform:rotate(2deg) translateY(10px)}.gallery img:hover{transform:scale(1.06)}
+.hid{position:absolute;z-index:20;width:34px;border:0;background:none;padding:0;cursor:pointer;opacity:.85;animation:bob 3s ease-in-out infinite alternate}
+.hid:hover{transform:scale(1.3)}.hid.got{animation:caught .7s forwards;pointer-events:none}
+@keyframes bob{from{translate:0 0}to{translate:0 -8px}}
+@keyframes caught{40%{transform:scale(2) rotate(20deg)}100%{transform:scale(0) translateY(-60px);opacity:0}}
+.prize{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(4,9,20,.7);backdrop-filter:blur(4px)}.prize[hidden]{display:none!important}
+.prize .box{max-width:min(460px,90vw);text-align:center;background:linear-gradient(#1c3566,#0e1d3d);border:1px solid rgba(255,210,63,.45);border-radius:18px;padding:34px 28px;box-shadow:0 0 60px rgba(255,210,63,.3)}
+.prize h3{font-family:var(--display);font-size:2.6rem;margin:0 0 10px;color:var(--gold)}.prize p{color:var(--muted);line-height:1.6;margin:0 0 20px}
+.count{text-align:center;padding:90px 16px 40px}
+.count .big{font-family:var(--display);font-size:clamp(5rem,15vw,10rem);line-height:1;color:var(--red);text-shadow:0 0 40px rgba(215,38,61,.55),0 6px 0 #3a0610}
+.count .lbl{font-family:var(--display);font-size:clamp(1.8rem,3.4vw,2.6rem);color:var(--snow)}
+.count .ticks{margin-top:10px;color:var(--muted);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.foot{position:relative;padding:70px 16px 0;background:linear-gradient(var(--night),#050b18)}
+.gifts{display:flex;justify-content:center;align-items:flex-end;gap:clamp(12px,3vw,34px);flex-wrap:wrap}
+.gift{position:relative;display:grid;place-items:center;text-align:center;text-decoration:none;color:#fff;width:clamp(130px,16vw,170px);height:clamp(130px,16vw,160px);border-radius:8px;padding:34px 12px 10px;font-weight:900;font-size:.95rem;line-height:1.25;box-shadow:inset -8px -8px 0 rgba(0,0,0,.15),0 10px 20px rgba(0,0,0,.5);transition:transform .3s}
+.gift::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:18px;margin-left:-9px;background:var(--gold)}
+.gift::after{content:"";position:absolute;left:50%;top:-22px;width:60px;height:30px;margin-left:-30px;border:8px solid var(--gold);border-radius:50% 50% 0 0}
+.gift span{position:relative;z-index:1;text-shadow:0 2px 4px rgba(0,0,0,.5)}
+.gift:hover{transform:translateY(-8px) rotate(-3deg)}
+.snowbank{height:60px;margin-top:-10px;background:radial-gradient(60% 100% at 50% 0,#e8eefb,#c9d6ef 70%)}
+.fine{text-align:center;color:#6f7fa3;font-size:.8rem;padding:18px 16px 30px;background:#c9d6ef;color:#34466d}
+@media (max-width:820px){.split{grid-template-columns:1fr}.flipper{margin-bottom:64px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="intro" id="intro" aria-hidden="true">
+  <svg class="istar" viewBox="0 0 60 60"><path d="M30 3 L37 22 L57 22 L41 34 L47 54 L30 42 L13 54 L19 34 L3 22 L23 22Z" fill="#ffd23f" stroke="#e0a830" stroke-width="2"/></svg>
+  <div class="say">Click to open the magic... with sound</div>
+</div>
+<nav class="nav" aria-label="Main">
+  <a class="brand" href="#hero">The Christmas Shelf</a>
+  <div class="links"><a href="#elves">Seek &amp; find</a><a href="#mosaic">Mosaic</a><a href="#fireside">Grown-up colouring</a></div>
+  <span class="pill" title="Hidden elves found">Elves<span class="hide-sm"> found</span> <b id="gcount">0/5</b></span>
+  <button class="pill" id="sound" type="button" aria-pressed="false">Sound <b>off</b></button>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="moon" aria-hidden="true"></div>
+  <div class="char" id="sleigh" aria-hidden="true"><svg viewBox="0 0 340 90" width="100%"><g fill="#061022"><path d="M10 40 L60 40 L66 30 L72 40 L90 40 L92 50 L60 56 L14 52Z"/><path d="M20 58 L40 70 M50 58 L70 70" stroke="#061022" stroke-width="4"/><path d="M100 40 L150 40 L156 30 L162 40 L180 40 L182 50 L150 56 L104 52Z"/><path d="M110 58 L130 70 M140 58 L160 70" stroke="#061022" stroke-width="4"/><path d="M200 50 Q210 30 260 32 L290 20 L296 28 L270 44 L262 64 H210Z"/><circle cx="268" cy="18" r="8"/><path d="M200 70 H300 Q312 70 312 60" stroke="#061022" stroke-width="5" fill="none"/><path d="M90 46 L200 50 M180 46 L200 50" stroke="#061022" stroke-width="2"/></g><circle cx="16" cy="36" r="4" fill="#d7263d"/></svg></div>
+  <svg class="skyline" viewBox="0 0 1440 460" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <path d="M0 320 Q200 260 420 300 T840 290 T1440 300 V460 H0Z" fill="#dfe8f8"/>
+    <path d="M0 360 Q300 320 600 350 T1440 340 V460 H0Z" fill="#c7d4ee"/>
+    <!-- christmas tree -->
+    <g><path d="M200 120 L130 230 H165 L110 320 H155 L95 410 H305 L245 320 H290 L235 230 H270Z" fill="#1f6b3a"/><rect x="185" y="410" width="30" height="40" fill="#6b4530"/>
+      <g id="treelights"></g><path d="M200 96 L207 114 L226 114 L211 125 L217 143 L200 132 L183 143 L189 125 L174 114 L193 114Z" fill="#ffd23f" class="light"/></g>
+    <!-- cottage -->
+    <g><path d="M1000 460 V300 L1110 220 L1220 300 V460Z" fill="#8a4a3a"/><path d="M985 305 L1110 205 L1235 305 L1222 312 L1110 226 L998 312Z" fill="#f4f8ff"/>
+      <rect x="1170" y="230" width="26" height="54" fill="#6b3a2c"/><rect x="1166" y="222" width="34" height="10" fill="#f4f8ff"/>
+      <rect x="1040" y="340" width="46" height="46" rx="4" fill="#ffd27a" class="light"/><rect x="1135" y="340" width="46" height="46" rx="4" fill="#ffc45a" class="light" style="animation-delay:-.8s"/><rect x="1095" y="390" width="40" height="70" rx="4" fill="#3a1a14"/>
+      <g id="smoke" fill="rgba(230,236,250,.5)"></g></g>
+    <g fill="#f4f8ff" id="fence"><rect x="0" y="440" width="1440" height="20"/></g>
+  </svg>
+  <div class="presents" aria-hidden="true">
+    <svg width="90" height="80" viewBox="0 0 90 80"><rect x="5" y="25" width="80" height="55" fill="#d7263d"/><rect x="0" y="15" width="90" height="16" fill="#b01d31"/><rect x="38" y="15" width="14" height="65" fill="#ffd23f"/><path d="M45 15 Q25 -5 30 12 Q40 16 45 15 Q55 -5 60 12 Q50 16 45 15" fill="#ffd23f"/></svg>
+    <svg width="64" height="60" viewBox="0 0 64 60"><rect x="4" y="18" width="56" height="42" fill="#2f8f4e"/><rect x="0" y="10" width="64" height="12" fill="#257a40"/><rect x="26" y="10" width="12" height="50" fill="#f4f8ff"/></svg>
+  </div>
+  <div class="char" id="snowman" aria-label="A snowman. Hover to hear him." role="img"><svg viewBox="0 0 150 210" width="100%"><g id="smbob">
+    <circle cx="75" cy="160" r="48" fill="#f4f8ff" stroke="#c7d4ee" stroke-width="4"/><circle cx="75" cy="92" r="36" fill="#f4f8ff" stroke="#c7d4ee" stroke-width="4"/><circle cx="75" cy="40" r="28" fill="#f4f8ff" stroke="#c7d4ee" stroke-width="4"/>
+    <rect x="50" y="4" width="50" height="14" fill="#1a1a2a"/><rect x="58" y="-24" width="34" height="30" fill="#1a1a2a"/><rect x="58" y="-2" width="34" height="6" fill="#d7263d"/>
+    <circle cx="65" cy="36" r="4" fill="#1a1a2a"/><circle cx="85" cy="36" r="4" fill="#1a1a2a"/><path d="M75 44 L100 50 L75 50Z" fill="#f08c34"/><path d="M62 56 Q75 62 88 56" stroke="#1a1a2a" stroke-width="3" fill="none"/>
+    <path d="M44 70 Q75 80 106 70 L106 82 Q75 92 44 82Z" fill="#d7263d"/><rect x="92" y="78" width="14" height="40" fill="#d7263d"/>
+    <circle cx="75" cy="92" r="4" fill="#1a1a2a"/><circle cx="75" cy="108" r="4" fill="#1a1a2a"/>
+    <path id="smarmL" d="M42 92 L6 72" stroke="#6b4530" stroke-width="5" stroke-linecap="round"/><path id="smarmR" d="M108 92 L144 72" stroke="#6b4530" stroke-width="5" stroke-linecap="round"/></g></svg></div>
+  <div class="char" id="elf" aria-label="An elf. Hover to say hello." role="img"><svg viewBox="0 0 130 170" width="100%">
+    <path d="M30 60 L65 0 L100 60Z" fill="#2f8f4e"/><circle cx="65" cy="2" r="9" fill="#f4f8ff"/><rect x="26" y="56" width="78" height="12" rx="6" fill="#f4f8ff"/>
+    <path d="M24 80 L8 66 L26 92Z M106 80 L122 66 L104 92Z" fill="#f2c9a6"/><circle cx="65" cy="92" r="38" fill="#f2c9a6"/>
+    <circle cx="52" cy="88" r="6" fill="#1a1a2a"/><circle cx="78" cy="88" r="6" fill="#1a1a2a"/><circle cx="46" cy="102" r="6" fill="#f08080" opacity=".6"/><circle cx="84" cy="102" r="6" fill="#f08080" opacity=".6"/>
+    <path d="M50 108 Q65 120 80 108" stroke="#1a1a2a" stroke-width="3" fill="none"/><path d="M30 130 H100 V170 H30Z" fill="#d7263d"/><path d="M30 130 L65 150 L100 130" fill="#2f8f4e"/></svg><span class="bub">Hello!</span></div>
+  <div class="char" id="robin" aria-label="A robin. Hover to hear it sing." role="img"><svg viewBox="0 0 70 60" width="100%"><ellipse cx="34" cy="34" rx="24" ry="20" fill="#6b4a3a"/><circle cx="50" cy="22" r="12" fill="#6b4a3a"/><path d="M40 30 Q52 26 54 40 Q46 50 36 44Z" fill="#d7263d"/><path d="M60 22 L68 24 L60 26Z" fill="#f0a030"/><circle cx="53" cy="19" r="2.2" fill="#fff"/><path d="M10 34 L0 30 L6 40Z" fill="#5a3a2a"/><path d="M28 54 V60 M38 54 V60" stroke="#3a2a1a" stroke-width="2"/></svg></div>
+  <canvas id="snow" aria-hidden="true"></canvas>
+  <div class="copy">
+    <div class="kicker">The Gentle Bookshop presents</div>
+    <h1>The <span>Christmas</span> Shelf</h1>
+    <p>Cosy, twinkly and full of festive fun. Hidden-picture puzzles for little elves and grayscale colouring by the fire for grown-ups.</p>
+    <a class="cta" href="#elves">Open the Christmas shelf</a><a class="cta alt" href="#shelf">Print sample pages</a>
+  </div>
+  <div class="carousel-wrap" aria-label="Christmas books"><div class="ring" id="ring"></div></div>
+  <div class="jumper" id="jumper" aria-hidden="true"><span class="say">Ho ho ho!</span></div>
+  <div class="hint">Hover a book. An elf might be hiding behind it...</div>
+</section>
+
+<main class="lane" id="books">
+  <section class="chapter" id="elves">
+    <div class="split">
+      <div class="chapter-head"><div class="kicker">For little elves, ages 4 to 8</div><h2>Can you find <em>all 12?</em></h2>
+        <p>Fifty busy Christmas scenes, from Santa's workshop and the reindeer stable to building a snowman, each hiding twelve little things to spot. Find them, tick them off, then colour the whole page.</p></div>
+      <div class="flipper" id="flipper">
+        <img class="on" src="samples/sf-workshop.jpg" alt="Seek and find page: Santa's workshop"><img src="samples/sf-reindeer.jpg" alt="Seek and find page: the reindeer stable"><img src="samples/sf-snowman.jpg" alt="Seek and find page: building a snowman">
+        <div class="ctrl"><button class="round" data-dir="-1" type="button" aria-label="Previous page">&lsaquo;</button><span id="fliplbl">Page 1 of 3</span><button class="round" data-dir="1" type="button" aria-label="Next page">&rsaquo;</button></div>
+      </div>
+    </div>
+    <div class="shelf" data-books="christmas-seek-and-find"></div>
+    <button class="hid" type="button" aria-label="A hidden elf" style="right:6%;top:70px"></button>
+  </section>
+
+  <section class="chapter" id="mosaic">
+    <div class="split">
+      <div class="mosaic-box"><div class="mosaic" id="mosaicgrid" aria-label="Colour by number puzzle"></div><div class="legend" id="legend"></div>
+        <div style="display:flex;gap:10px"><button class="btn hot" id="reveal" type="button">Reveal it all</button><button class="btn" id="reset" type="button">Start again</button></div><div class="status" id="mstatus" role="status"></div></div>
+      <div class="chapter-head"><div class="kicker">Colour by number</div><h2>Colour the dots. <em>What appears?</em></h2>
+        <p>Every circle has a number. Colour each one to match and a festive picture slowly appears. Try this little one, then see our mystery mosaic books.</p></div>
+    </div>
+    <div class="shelf" data-books="dogs-mystery-mosaics"></div>
+    <button class="hid" type="button" aria-label="A hidden elf" style="left:3%;bottom:120px"></button>
+  </section>
+
+  <section class="chapter" id="fireside">
+    <div class="split">
+      <div class="brush" id="brush"><img src="samples/gs-cottage.jpg" alt="Grayscale colouring page: a snowy cottage"><div class="tint" aria-hidden="true"></div><span class="tip">Hover to add a little colour</span></div>
+      <div class="chapter-head"><div class="kicker">For grown-ups, by the fire</div><h2>Grayscale, <em>by candlelight</em></h2>
+        <p>Detailed shaded pages for coloured pencils: Santa writing his list, a gingerbread house, a stag in the snowy woods, a robin on a holly branch. The shading does the hard work, so a little colour goes a long way.</p></div>
+    </div>
+    <div class="gallery" aria-label="Pages from inside the grayscale books"><img src="samples/gs-santa.jpg" alt="Santa writing his list" loading="lazy"><img src="samples/gs-ginger.jpg" alt="Gingerbread house" loading="lazy"><img src="samples/gs-stag.jpg" alt="Stag in the snow" loading="lazy"><img src="samples/gs-snowman.jpg" alt="Snowman" loading="lazy"><img src="samples/gs-robin.jpg" alt="Robin" loading="lazy"><img src="samples/gs-chimney.jpg" alt="Santa on the chimney" loading="lazy"></div>
+    <div class="shelf" data-books="christmas-grayscale-vol1,christmas-grayscale-vol2,christmas-grayscale-complete"></div>
+    <button class="hid" type="button" aria-label="A hidden elf" style="left:45%;top:60px"></button>
+  </section>
+
+  <section class="count"><div class="big" id="nights">--</div><div class="lbl" id="nightsLbl">sleeps until Christmas</div><div class="ticks" id="ticks"></div></section>
+  <section class="chapter" id="shelf" style="padding-top:20px">
+    <div class="chapter-head"><div class="kicker">The whole Christmas shelf</div><h2>Four books. <em>One very merry Christmas.</em></h2><p>Every book has five sample pages you can print at home. Try them first, then get the whole book on Amazon.</p></div>
+    <div class="shelf" data-books="christmas-seek-and-find,christmas-grayscale-vol1,christmas-grayscale-vol2,christmas-grayscale-complete"></div>
+    <button class="hid" type="button" aria-label="A hidden elf" style="right:8%;top:10px"></button>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="gifts">
+    <a class="gift" style="background:#d7263d" href="https://ainjection.github.io/gentle-bookshop/?src=christmas-footer"><span>The Gentle Bookshop, every other book</span></a>
+    <a class="gift" style="background:#2f8f4e" href="https://ainjection.github.io/halloween-books/?src=christmas-footer"><span>The Halloween Shelf</span></a>
+    <a class="gift" style="background:#3a5fa8" href="https://www.youtube.com/@TheGentleBookshop" target="_blank" rel="noopener"><span>Watch us on YouTube</span></a>
+    <a class="gift" style="background:#8a4a9a" href="#hero"><span>Back to the top</span></a>
+  </div>
+  <div class="snowbank" aria-hidden="true"></div>
+  <p class="fine">The Christmas Shelf is part of The Gentle Bookshop. Book links go to Amazon. Sample pages are for personal use.</p>
+</footer>
+<div class="prize" id="prize" hidden><div class="box" role="dialog" aria-modal="true" aria-labelledby="prizeT"><h3 id="prizeT">You found all 5 elves!</h3>
+  <p>Sharp eyes. You'd love Christmas Seek &amp; Find: fifty busy scenes with twelve hidden things on every page.</p>
+  <a class="cta" href="https://www.amazon.com/dp/B0H7MK2MWQ" target="_blank" rel="noopener">See the book</a><p style="margin:16px 0 0"><button class="btn" id="prizeClose" type="button">Back to the shelf</button></p></div></div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const hero = $('#hero');
+  // ---------- sound ----------
+  const Snd = (() => { let ctx, master, on = false;
+    const init = () => { ctx = new (window.AudioContext || window.webkitAudioContext)(); master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination); };
+    const tone = (f, d, dur, type = 'sine', vol = .18) => { if (!on) return; const t = ctx.currentTime + d, o = ctx.createOscillator(), g = ctx.createGain(); o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .01); g.gain.exponentialRampToValueAtTime(.001, t + dur); o.connect(g).connect(master); o.start(t); o.stop(t + dur + .05); };
+    const bells = () => { [0, .12, .24, .36].forEach((d, i) => { tone(2400 + (i % 2) * 300, d, .5, 'triangle', .07); tone(3600, d + .02, .3, 'sine', .04); }); };
+    const jingle = () => { const N = { E: 659, G: 784, C: 523, D: 587, F: 698 }; 'E E E_ E E E_ E G C D E__'.split(' ').forEach((n, k) => tone(N[n[0]], k * .22, n.length > 2 ? .9 : n.length > 1 ? .5 : .25, 'sine', .15)); };
+    const chirp = () => { [0, .1, .2].forEach(d => { tone(3000, d, .08, 'sine', .1); tone(3600, d + .04, .06, 'sine', .08); }); };
+    const pop = () => tone(900, 0, .12, 'sine', .15);
+    return { toggle() { if (!ctx) init(); on = !on; if (ctx.state === 'suspended') ctx.resume(); master.gain.setTargetAtTime(on ? .8 : 0, ctx.currentTime, .1); return on; }, isOn: () => on, bells, jingle, chirp, pop };
+  })();
+  const snd = $('#sound'); let chose = false;
+  const setUI = on => { snd.setAttribute('aria-pressed', on); snd.querySelector('b').textContent = on ? 'on' : 'off'; };
+  snd.addEventListener('click', () => { chose = true; setUI(Snd.toggle()); if (Snd.isOn()) Snd.jingle(); });
+  const soundOn = () => { if (!Snd.isOn()) { setUI(Snd.toggle()); setTimeout(Snd.jingle, 400); } };
+  addEventListener('pointerdown', e => { if (!chose && !e.target.closest('#sound')) { chose = true; soundOn(); } }, { once: true });
+  const VO = { santa: 'sounds/santa.mp3', elf: 'sounds/elf.mp3', snowman: 'sounds/snowman.mp3' }, last = {};
+  const voice = (n, gap = 1800) => { if (!Snd.isOn()) return; const now = performance.now(); if (now - (last[n] || 0) < gap) return; last[n] = now; const a = new Audio(VO[n]); a.volume = .9; a.play().catch(() => {}); };
+
+  // ---------- intro ----------
+  const intro = $('#intro'); const openScene = () => { if (intro.classList.contains('open')) return; intro.classList.add('open'); setTimeout(() => intro.classList.add('gone'), 1400); };
+  if (reduce) intro.classList.add('gone'); else { intro.addEventListener('click', () => { chose = true; soundOn(); openScene(); }); setTimeout(openScene, 2800); }
+
+  // ---------- scenery ----------
+  for (let x = 0; x < 1440; x += 30) $('#fence').insertAdjacentHTML('beforeend', `<path d="M${x} 460 V412 L${x + 6} 400 L${x + 12} 412 V460Z"/>`);
+  const LC = ['#ffd23f', '#d7263d', '#6fc3ff', '#f4f8ff', '#ff8ad0'];
+  [[200, 160], [180, 200], [220, 210], [160, 260], [240, 250], [200, 280], [140, 330], [260, 330], [200, 350], [120, 390], [280, 390], [200, 395], [170, 300], [230, 300]].forEach(([x, y], i) => $('#treelights').insertAdjacentHTML('beforeend', `<circle cx="${x}" cy="${y}" r="7" fill="${LC[i % 5]}" class="light" style="animation-delay:-${(i * .37) % 1.6}s"/>`));
+  const puffs = [...Array(5)].map(() => { const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); c.setAttribute('r', 10); $('#smoke').appendChild(c); return c; });
+  const cv = document.createElement('canvas'); const snowC = $('#snow'), sx = snowC.getContext('2d'); let flakes = [];
+  const sizeSnow = () => { snowC.width = hero.clientWidth; snowC.height = hero.clientHeight; flakes = Array.from({ length: Math.round(snowC.width * snowC.height / 9000) }, () => ({ x: Math.random() * snowC.width, y: Math.random() * snowC.height, r: .8 + Math.random() * 2.6, v: .3 + Math.random() * .9, p: Math.random() * 6.28 })); };
+  sizeSnow(); addEventListener('resize', sizeSnow);
+
+  // ---------- carousel ----------
+  const ELF = '<svg viewBox="0 0 100 100" width="100%"><path d="M22 46 L50 0 L78 46Z" fill="#2f8f4e"/><circle cx="50" cy="2" r="7" fill="#f4f8ff"/><rect x="18" y="42" width="64" height="10" rx="5" fill="#f4f8ff"/><path d="M16 62 L2 52 L18 72Z M84 62 L98 52 L82 72Z" fill="#f2c9a6"/><circle cx="50" cy="70" r="30" fill="#f2c9a6"/><circle cx="40" cy="66" r="5" fill="#1a1a2a"/><circle cx="60" cy="66" r="5" fill="#1a1a2a"/><path d="M40 82 Q50 90 60 82" stroke="#1a1a2a" stroke-width="3" fill="none"/></svg>';
+  const RING = [['christmas-seek-and-find', 'B0H7MK2MWQ', 'covers/christmas-seek-and-find.jpg'], ['christmas-grayscale-vol1', 'B0HHSG215H', 'covers/christmas-grayscale-vol1.jpg'], ['christmas-seek-and-find', 'B0H7MK2MWQ', 'samples/sf-workshop.jpg'], ['christmas-grayscale-vol2', 'B0HHSG2M4Q', 'covers/christmas-grayscale-vol2.jpg'], ['christmas-grayscale-vol1', 'B0HHSG215H', 'samples/gs-santa.jpg'], ['christmas-grayscale-complete', 'B0HHBZK7S1', 'covers/christmas-grayscale-complete.jpg'], ['christmas-grayscale-vol2', 'B0HHSG2M4Q', 'samples/gs-stag.jpg'], ['christmas-seek-and-find', 'B0H7MK2MWQ', 'samples/sf-reindeer.jpg']];
+  const ring = $('#ring'); const els = RING.map(([slug, asin, img]) => { const a = document.createElement('a'); a.className = 'book'; a.href = `https://www.amazon.com/dp/${asin}`; a.target = '_blank'; a.rel = 'noopener'; a.setAttribute('aria-label', slug.replace(/-/g, ' ') + ' on Amazon');
+    a.innerHTML = `<div class="peek">${ELF}</div><div class="cover"><img src="${img}" alt=""></div>`; ring.appendChild(a); a.addEventListener('pointerenter', () => voice('elf', 1200)); return a; });
+  let angle = 0, hovering = false; ring.addEventListener('mouseenter', () => hovering = true); ring.addEventListener('mouseleave', () => hovering = false);
+  const place = () => { const r = innerWidth < 820 ? 210 : 330; els.forEach((el, i) => { const a = angle + i * 360 / els.length; el.style.transform = `rotateY(${a}deg) translateZ(${r}px)`; const c = Math.cos(a * Math.PI / 180); el.style.opacity = (.35 + .65 * (c + 1) / 2).toFixed(2); el.style.pointerEvents = c > -.2 ? 'auto' : 'none'; }); };
+  function peekLoop() { const front = els.filter((el, i) => Math.cos((angle + i * 360 / els.length) * Math.PI / 180) > .55); const el = front[Math.floor(Math.random() * front.length)]; if (el) { el.classList.add('peeking'); setTimeout(() => el.classList.remove('peeking'), 1600); } setTimeout(peekLoop, 2600 + Math.random() * 2600); }
+
+  // ---------- Santa jumps out ----------
+  const SANTA = '<svg viewBox="0 0 200 220" width="100%"><path d="M40 70 Q100 -20 160 70Z" fill="#d7263d"/><circle cx="170" cy="40" r="14" fill="#f4f8ff"/><path d="M160 70 Q175 40 170 40" stroke="#d7263d" stroke-width="18" fill="none"/><rect x="30" y="64" width="140" height="22" rx="11" fill="#f4f8ff"/><circle cx="100" cy="116" r="50" fill="#f2c9a6"/><circle cx="82" cy="106" r="6" fill="#1a1a2a"/><circle cx="118" cy="106" r="6" fill="#1a1a2a"/><circle cx="100" cy="124" r="10" fill="#e08a8a"/><path d="M40 130 Q50 220 100 216 Q150 220 160 130 Q140 150 100 146 Q60 150 40 130Z" fill="#f4f8ff"/><path d="M80 150 Q100 166 120 150" stroke="#1a1a2a" stroke-width="4" fill="#a02030"/></svg>';
+  const jumper = $('#jumper'); jumper.insertAdjacentHTML('afterbegin', SANTA);
+  const jump = () => { jumper.style.left = (30 + Math.random() * 40) + '%'; jumper.classList.remove('go'); void jumper.offsetWidth; jumper.classList.add('go'); voice('santa', 5000); };
+
+  // ---------- characters ----------
+  const W = () => hero.clientWidth;
+  const sleighGo = () => $('#sleigh').animate([{ transform: 'translateX(-400px) translateY(20px)' }, { transform: `translateX(${W() * .5}px) translateY(-30px)` }, { transform: `translateX(${W() + 400}px) translateY(0)` }], { duration: 10000, easing: 'ease-in-out', fill: 'forwards' });
+  const snowmanGo = () => { const ltr = Math.random() < .5, from = ltr ? -200 : W() + 40, to = ltr ? W() + 40 : -200; $('#snowman').animate([{ transform: `translateX(${from}px)` }, { transform: `translateX(${to}px)` }], { duration: 24000, easing: 'linear', fill: 'forwards' }); };
+  const elf = $('#elf'); const elfGo = () => { elf.style.left = (33 + Math.random() * 6) + 'vw'; elf.classList.add('up'); setTimeout(() => elf.classList.remove('up'), 3800); };
+  $('#snowman').addEventListener('pointerenter', () => voice('snowman', 2500)); elf.addEventListener('pointerenter', () => voice('elf', 1500)); $('#robin').addEventListener('pointerenter', () => Snd.isOn() && Snd.chirp());
+  hero.addEventListener('pointerover', e => { if (e.target.closest('.book')) Snd.isOn() && Snd.bells(); });
+
+  function tick(now) { const t = now / 1000;
+    if (!hovering) angle -= .12; place();
+    sx.clearRect(0, 0, snowC.width, snowC.height); sx.fillStyle = '#fff';
+    flakes.forEach(f => { f.y += f.v; f.x += Math.sin(t + f.p) * .4; if (f.y > snowC.height) { f.y = -5; f.x = Math.random() * snowC.width; } sx.globalAlpha = .5 + f.r / 6; sx.beginPath(); sx.arc(f.x, f.y, f.r, 0, 6.28); sx.fill(); });
+    puffs.forEach((c, i) => { const p = (t * .25 + i / 5) % 1; c.setAttribute('cx', 1183 + Math.sin(p * 6 + i) * 12 + p * 30); c.setAttribute('cy', 215 - p * 120); c.setAttribute('r', 8 + p * 18); c.setAttribute('opacity', (1 - p).toFixed(2)); });
+    $('#smbob').setAttribute('transform', `translate(0 ${(-Math.abs(Math.sin(t * 4)) * 6).toFixed(1)}) rotate(${(Math.sin(t * 4) * 4).toFixed(1)} 75 200)`);
+    if (!reduce) requestAnimationFrame(tick); }
+  place(); requestAnimationFrame(tick);
+  if (!reduce) { setTimeout(peekLoop, 1800); setTimeout(sleighGo, 3500); setInterval(sleighGo, 22000); setTimeout(snowmanGo, 5000); setInterval(snowmanGo, 30000); setTimeout(elfGo, 9000); setInterval(elfGo, 19000); setTimeout(jump, 7000); setInterval(jump, 17000); }
+
+  // ---------- book cards ----------
+  const BOOKS = { 'christmas-seek-and-find': ['B0H7MK2MWQ', 'Christmas Seek & Find', 'Ages 4 to 8', true], 'christmas-grayscale-vol1': ['B0HHSG215H', 'Christmas Grayscale, Volume One', 'Adult colourists', true], 'christmas-grayscale-vol2': ['B0HHSG2M4Q', 'Christmas Grayscale, Volume Two', 'Adult colourists', true], 'christmas-grayscale-complete': ['B0HHBZK7S1', 'Christmas Grayscale: The Complete Collection', '100 pages, adult colourists', true], 'dogs-mystery-mosaics': ['B0HH7G1D5P', '100 Dogs Mystery Mosaics', 'Colour by number, all ages', false] };
+  $$('.shelf').forEach(sh => { sh.innerHTML = sh.dataset.books.split(',').map(slug => { const [asin, name, who, pdf] = BOOKS[slug]; const amz = `https://www.amazon.com/dp/${asin}`;
+    return `<div class="card"><div class="cw"><div class="pk">${ELF}</div><a href="${amz}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><div class="tilt"><img src="covers/${slug}.jpg" alt="" loading="lazy"></div></a></div><h3><a href="${amz}" target="_blank" rel="noopener">${name}</a></h3><span class="who">${who}</span><div class="acts"><a class="buy" href="${amz}" target="_blank" rel="noopener">See it on Amazon</a>${pdf ? `<a class="dl" href="pages/${slug}-sample-pages.pdf" download>Print 5 sample pages</a>` : ''}</div></div>`; }).join(''); });
+  $$('.card').forEach(c => c.addEventListener('pointerenter', () => voice('elf', 1500)));
+  // flipper
+  const pages = $$('#flipper img'); let pi = 0;
+  $$('#flipper .round').forEach(b => b.addEventListener('click', () => { pages[pi].classList.remove('on'); pi = (pi + +b.dataset.dir + pages.length) % pages.length; pages[pi].classList.add('on'); $('#fliplbl').textContent = `Page ${pi + 1} of ${pages.length}`; Snd.isOn() && Snd.pop(); }));
+  // mosaic: a Christmas tree
+  const ART = ['1111111331111111', '1111111331111111', '1111111221111111', '1111112222111111', '1111122542211111', '1111222222221111', '1111125222521111', '1111222222222111', '1112222542222211', '1122252222252211', '1122222222222221', '1222542222542222', '2222222222222222', '1111111441111111', '1111111441111111', '1111166666611111'];
+  const COL = { 1: ['#13264d', 'midnight blue'], 2: ['#2f8f4e', 'tree green'], 3: ['#ffd23f', 'star gold'], 4: ['#8a5a36', 'trunk brown'], 5: ['#d7263d', 'bauble red'], 6: ['#c0392b', 'pot red'] };
+  const mo = $('#mosaicgrid'); ART.forEach(row => [...row].forEach(n => { const b = document.createElement('button'); b.type = 'button'; b.textContent = n; b.dataset.n = n; b.setAttribute('aria-label', `circle ${n}`); mo.appendChild(b); }));
+  $('#legend').innerHTML = Object.entries(COL).map(([n, [c, name]]) => `<span><i style="background:${c}"></i>${n} = ${name}</span>`).join('');
+  const dots = $$('#mosaicgrid button'); const check = () => { const left = dots.filter(b => !b.classList.contains('done')).length; $('#mstatus').textContent = left === 0 ? 'A Christmas tree!' : left < dots.length ? `${left} circles to go...` : ''; };
+  const fill = b => { if (b.classList.contains('done')) return; b.classList.add('done'); b.style.background = COL[b.dataset.n][0]; check(); };
+  let painting = false; mo.addEventListener('pointerdown', e => { painting = true; if (e.target.dataset.n) { fill(e.target); Snd.isOn() && Snd.pop(); } }); addEventListener('pointerup', () => painting = false); mo.addEventListener('pointerover', e => { if (painting && e.target.dataset.n) fill(e.target); });
+  $('#reveal').addEventListener('click', () => dots.forEach((b, i) => setTimeout(() => fill(b), reduce ? 0 : Math.hypot(Math.floor(i / 16) - 7.5, i % 16 - 7.5) * 70)));
+  $('#reset').addEventListener('click', () => { dots.forEach(b => { b.classList.remove('done'); b.style.background = ''; }); check(); });
+  // brush
+  const br = $('#brush'); br.addEventListener('pointermove', e => { const r = br.getBoundingClientRect(); br.style.setProperty('--bx', (e.clientX - r.left) + 'px'); br.style.setProperty('--by', (e.clientY - r.top) + 'px'); });
+  // hidden elves
+  const hids = $$('.hid'); let got = 0;
+  hids.forEach(h => { h.innerHTML = ELF; h.addEventListener('click', () => { h.classList.add('got'); got++; $('#gcount').textContent = `${got}/${hids.length}`; voice('elf', 0); if (got === hids.length) setTimeout(() => { $('#prize').hidden = false; Snd.isOn() && Snd.jingle(); $('#prizeClose').focus(); }, 500); }); });
+  $('#prizeClose').addEventListener('click', () => $('#prize').hidden = true); addEventListener('keydown', e => { if (e.key === 'Escape') $('#prize').hidden = true; });
+  // countdown
+  function tickC() { const now = new Date(); let xm = new Date(now.getFullYear(), 11, 25); if (now >= new Date(now.getFullYear(), 11, 26)) xm = new Date(now.getFullYear() + 1, 11, 25);
+    if (now >= xm) { $('#nights').textContent = 'Today!'; $('#nightsLbl').textContent = 'Merry Christmas'; $('#ticks').textContent = ''; return; }
+    const ms = xm - now, days = Math.ceil(ms / 864e5); $('#nights').textContent = days; $('#nightsLbl').textContent = days === 1 ? 'sleep until Christmas' : 'sleeps until Christmas';
+    $('#ticks').textContent = `${Math.floor(ms / 864e5)} days, ${Math.floor(ms / 36e5) % 24} hours, ${Math.floor(ms / 6e4) % 60} minutes, ${Math.floor(ms / 1e3) % 60} seconds`; }
+  tickC(); setInterval(tickC, 1000);
+})();
+</script>
+<script src="track.js" defer></script>
+</body>
+</html>
