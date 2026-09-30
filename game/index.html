@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>Robin's Present Flight | The Christmas Shelf</title>
+<meta name="description" content="Fly Ruby the little robin over a snowy Christmas village, dodge the chimneys, trees and grumpy crows, and catch the presents. A Christmas game from The Gentle Bookshop's Christmas Shelf." />
+<meta property="og:title" content="Robin's Present Flight: our Christmas game" />
+<meta property="og:description" content="Fly Ruby the little robin over a snowy village, dodge the grumpy crows and catch the presents." />
+<meta property="og:image" content="https://ainjection.github.io/christmas-books/game/assets/og.jpg" />
+<link rel="icon" href="assets/robin.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Nunito:wght@400;700;800;900&display=swap">
+<style>
+:root { --night:#0a1630; --navy:#13264d; --snow:#f4f8ff; --red:#d7263d; --red-d:#9e1628; --gold:#ffd23f; --green:#2f8f4e; --ink:#eef3ff; --muted:#b6c4e0; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { width:100%; height:100%; overflow:hidden; background:var(--night); color:var(--ink); font-family:"Nunito", system-ui, sans-serif; touch-action:none; overscroll-behavior:none; }
+#game { position:fixed; inset:0; width:100%; height:100%; display:block; }
+.hud { position:fixed; left:0; right:0; top:max(10px, env(safe-area-inset-top)); display:flex; justify-content:center; pointer-events:none; }
+#score { font-family:"Mountains of Christmas", Georgia, serif; font-weight:700; font-size:clamp(44px, 10vh, 84px); color:var(--gold); text-shadow:0 4px 0 var(--red-d), 0 0 22px rgba(255,210,63,.5); }
+.btns { position:fixed; right:max(10px, env(safe-area-inset-right)); top:max(10px, env(safe-area-inset-top)); display:flex; gap:8px; z-index:5; }
+.btns button { width:44px; height:44px; border-radius:50%; border:2px solid rgba(244,248,255,.35); background:rgba(19,38,77,.75); color:var(--ink); font-size:20px; cursor:pointer; }
+#back { position:fixed; left:max(10px, env(safe-area-inset-left)); top:max(10px, env(safe-area-inset-top)); z-index:5; padding:10px 14px; border-radius:22px; background:rgba(19,38,77,.75); border:2px solid rgba(244,248,255,.35); color:var(--ink); font-weight:800; font-size:14px; text-decoration:none; }
+.overlay { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; padding:18px; background:radial-gradient(ellipse at center, rgba(19,38,77,.72), rgba(10,22,48,.9)); z-index:4; }
+.overlay[hidden] { display:none; }
+.card { width:min(460px, 100%); max-height:100%; overflow:auto; text-align:center; padding:22px 20px; border-radius:22px; background:linear-gradient(180deg, rgba(36,74,138,.95), rgba(19,38,77,.97)); border:2px solid rgba(255,210,63,.45); box-shadow:0 20px 60px rgba(0,0,0,.55); }
+h1, h2 { font-family:"Mountains of Christmas", Georgia, serif; font-weight:700; line-height:1.02; color:var(--gold); text-shadow:0 4px 0 var(--red-d); }
+h1 { font-size:clamp(38px, 7.5vh, 56px); }
+h2 { font-size:clamp(40px, 8vh, 62px); }
+.hero { width:96px; height:96px; object-fit:contain; margin:6px auto 2px; display:block; animation:bob 1.6s ease-in-out infinite; }
+@keyframes bob { 50% { transform:translateY(-8px); } }
+p { color:var(--muted); font-size:16px; line-height:1.45; margin:8px 0; }
+p b { color:var(--ink); }
+.play { margin:14px auto 4px; display:inline-block; padding:14px 38px; border-radius:40px; border:0; cursor:pointer; background:linear-gradient(180deg, #ff5a6e, var(--red)); color:#fff; font-family:"Nunito"; font-weight:900; font-size:22px; box-shadow:0 6px 0 var(--red-d), 0 10px 24px rgba(215,38,61,.4); }
+.play:active { transform:translateY(3px); box-shadow:0 3px 0 var(--red-d); }
+.stats { display:flex; justify-content:center; gap:26px; margin:8px 0 2px; }
+.stats div { font-size:13px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:800; }
+.stats span { display:block; font-family:"Mountains of Christmas", Georgia, serif; font-weight:700; font-size:38px; color:var(--ink); letter-spacing:0; text-transform:none; }
+.shelf-title { margin-top:14px; font-weight:900; color:var(--ink); font-size:15px; }
+.books { display:flex; gap:10px; justify-content:center; margin-top:8px; }
+.books a { width:30%; max-width:118px; text-decoration:none; color:var(--muted); font-size:11px; line-height:1.25; font-weight:700; }
+.books img { width:100%; aspect-ratio:1/1.3; object-fit:cover; border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,.5); display:block; margin-bottom:5px; }
+.shelf-link { display:inline-block; margin-top:12px; color:var(--gold); font-weight:800; font-size:14px; }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<a id="back" href="../?src=game">&larr; Christmas Shelf</a>
+<div class="hud"><div id="score" hidden>0</div></div>
+<div class="btns"><button id="mute" aria-label="Sound on or off">&#9835;</button><button id="full" aria-label="Full screen">&#9974;</button></div>
+
+<div class="overlay" id="start">
+  <div class="card">
+    <img class="hero" src="assets/robin.png" alt="Ruby the little robin" />
+    <h1>Robin's Present Flight</h1>
+    <p>Tap, click or press <b>space</b> to flap Ruby up. Let go to glide down.</p>
+    <p>Fly between the <b>snowy chimneys</b> and <b>Christmas trees</b>, dodge the <b>grumpy crows</b>, and catch all the <b>presents</b>.</p>
+    <button class="play" id="playBtn">Play</button>
+    <p id="bestStart"></p>
+  </div>
+</div>
+
+<div class="overlay" id="over" hidden>
+  <div class="card">
+    <h2>Oh, crumbs!</h2>
+    <p>Try again?</p>
+    <div class="stats"><div>Score<span id="finalScore">0</span></div><div>Best<span id="bestScore">0</span></div></div>
+    <button class="play" id="againBtn">Play again</button>
+    <div class="shelf-title">While you warm your wings, from our Christmas Shelf:</div>
+    <div class="books" id="books"></div>
+    <a class="shelf-link" href="../?src=game-over">See the whole Christmas Shelf &rarr;</a>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ---------- books shown between goes (rotating) ---------- */
+  const BOOKS = [
+    ['B0H7MK2MWQ', 'christmas-seek-and-find.jpg', 'Christmas Seek & Find'],
+    ['B0HHSG215H', 'christmas-grayscale-vol1.jpg', 'Christmas Grayscale Colouring, Vol. 1'],
+    ['B0HHSG2M4Q', 'christmas-grayscale-vol2.jpg', 'Christmas Grayscale Colouring, Vol. 2'],
+    ['B0HHBZK7S1', 'christmas-grayscale-complete.jpg', 'Christmas Grayscale: Complete'],
+  ];
+  let bookOffset = Math.floor(Math.random() * BOOKS.length);
+  function showBooks() {
+    const el = document.getElementById('books'); el.innerHTML = '';
+    for (let i = 0; i < 3; i++) {
+      const [asin, cover, name] = BOOKS[(bookOffset + i) % BOOKS.length];
+      const a = document.createElement('a');
+      a.href = `https://www.amazon.com/dp/${asin}`; a.target = '_blank'; a.rel = 'noopener';
+      a.innerHTML = `<img src="../covers/${cover}" alt="${name} cover" loading="lazy" />${name}`;
+      a.addEventListener('click', () => { try { window.__track && window.__track('game-book-click'); } catch (e) {} });
+      el.appendChild(a);
+    }
+    bookOffset = (bookOffset + 1) % BOOKS.length;
+  }
+
+  /* ---------- storage (best score) ---------- */
+  const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } },
+                  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  let best = parseInt(store.get('robin-best', '0'), 10) || 0;
+  let muted = store.get('robin-muted', '0') === '1';
+
+  /* ---------- images ---------- */
+  const IMG = {};
+  ['background', 'robin', 'crow', 'present', 'chimney', 'tree'].forEach(n => { const i = new Image(); i.src = `assets/${n}.${n === 'background' ? 'jpg' : 'png'}`; IMG[n] = i; });
+
+  /* ---------- sound: Jingle Bells (public domain) on a soft music box + synth effects ---------- */
+  let AC = null;
+  function ac() { if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } return AC; }
+  function note(hz, t, len, vol, type) {
+    const c = AC, o = c.createOscillator(), g = c.createGain();
+    o.type = type || 'triangle'; o.frequency.value = hz;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+    o.connect(g).connect(c.destination); o.start(t); o.stop(t + len + 0.05);
+  }
+  function bell(t, vol) {   // sleigh-bell shimmer: short high-passed noise
+    const c = AC, len = 0.09, buf = c.createBuffer(1, c.sampleRate * len, c.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    const s = c.createBufferSource(); s.buffer = buf; const f = c.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 6000;
+    const g = c.createGain(); g.gain.value = vol; s.connect(f).connect(g).connect(c.destination); s.start(t);
+  }
+  const E = 659.3, G = 784, C = 523.3, D = 587.3, F = 698.5;
+  // [pitch, beats]: chorus of Jingle Bells (James Lord Pierpont, 1857, public domain)
+  const TUNE = [[E,1],[E,1],[E,2],[E,1],[E,1],[E,2],[E,1],[G,1],[C,1.5],[D,.5],[E,4],
+                [F,1],[F,1],[F,1.5],[F,.5],[F,1],[E,1],[E,1],[E,.5],[E,.5],[E,1],[D,1],[D,1],[E,1],[D,2],[G,2],
+                [E,1],[E,1],[E,2],[E,1],[E,1],[E,2],[E,1],[G,1],[C,1.5],[D,.5],[E,4],
+                [F,1],[F,1],[F,1.5],[F,.5],[F,1],[E,1],[E,1],[E,.5],[E,.5],[G,1],[G,1],[F,1],[D,1],[C,4]];
+  const BEAT = 0.3, BASS = { [E]: 130.8, [F]: 174.6, [G]: 196, [C]: 130.8, [D]: 196 };
+  let musicTimer = null, nextT = 0, idx = 0, beatN = 0;
+  function musicTick() {   // look-ahead scheduler so the tune never drifts
+    const c = AC; if (!c) return;
+    while (nextT < c.currentTime + 0.25) {
+      const [hz, b] = TUNE[idx];
+      note(hz, nextT, Math.max(0.25, b * BEAT * 0.9), 0.09, 'triangle'); note(hz * 2, nextT, 0.35, 0.02, 'sine');
+      if (beatN % 2 === 0) note(BASS[hz] || 130.8, nextT, 0.5, 0.05, 'sine');
+      for (let k = 0; k < b * 2; k++) bell(nextT + k * BEAT / 2, k % 2 ? 0.025 : 0.05);
+      nextT += b * BEAT; beatN += b; idx = (idx + 1) % TUNE.length;
+      if (idx === 0) nextT += BEAT * 2;
+    }
+  }
+  function musicPlay() { const c = ac(); if (!c || muted || musicTimer) return; if (c.resume) c.resume(); idx = 0; beatN = 0; nextT = c.currentTime + 0.1; musicTimer = setInterval(musicTick, 80); }
+  function musicStop() { clearInterval(musicTimer); musicTimer = null; }
+  function flutter() {
+    const c = ac(); if (!c || muted) return;
+    const len = 0.14, buf = c.createBuffer(1, c.sampleRate * len, c.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    const src = c.createBufferSource(); src.buffer = buf;
+    const f = c.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.4;
+    f.frequency.setValueAtTime(1200, c.currentTime); f.frequency.exponentialRampToValueAtTime(3200, c.currentTime + len);
+    const g = c.createGain(); g.gain.setValueAtTime(0.16, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + len);
+    src.connect(f).connect(g).connect(c.destination); src.start();
+  }
+  function chime() { const c = ac(); if (!c || muted) return; [1046.5, 1318.5, 1568].forEach((hz, k) => note(hz, c.currentTime + k * 0.06, 0.3, 0.18, 'sine')); }
+  function bump() { const c = ac(); if (!c || muted) return; [392, 311, 262].forEach((hz, k) => note(hz, c.currentTime + k * 0.12, 0.3, 0.16, 'triangle')); }
+  function setMuted(m) { muted = m; store.set('robin-muted', m ? '1' : '0'); document.getElementById('mute').style.opacity = m ? 0.45 : 1; if (m) musicStop(); else if (state === 'play' && !dying) musicPlay(); }
+
+  /* ---------- canvas: world is 1000 units tall, width follows the screen ---------- */
+  const cv = document.getElementById('game'), ctx = cv.getContext('2d');
+  let W = 1000, H = 1000, scale = 1, dpr = 1;
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(innerWidth * dpr); cv.height = Math.round(innerHeight * dpr);
+    scale = cv.height / H; W = cv.width / scale;
+  }
+  addEventListener('resize', resize); resize();
+
+  /* ---------- falling snow, drawn over everything ---------- */
+  const flakes = Array.from({ length: 90 }, () => ({ x: Math.random(), y: Math.random() * 1000, r: 1.5 + Math.random() * 3.5, v: 30 + Math.random() * 60, s: Math.random() * 6 }));
+
+  /* ---------- game state ---------- */
+  const GRAV = 2000, FLAP = -620, BIRD_R = 34, MOON_X = 0.78;   // MOON_X: where the moon sits across the background art (0-1)
+  let state = 'start', bird, pipes, crows, presents, score, speed, lastT, spawnIn, crowIn, dying;
+  function reset() {
+    bird = { x: Math.max(160, W * 0.26), y: H * 0.45, vy: 0, rot: 0, wing: 0 };
+    pipes = []; crows = []; presents = []; score = 0; speed = 250; spawnIn = 0.6; crowIn = 4; dying = 0;
+    document.getElementById('score').textContent = '0';
+  }
+  reset();
+
+  function spawnPipe() {
+    const gap = Math.max(245, 330 - score * 3.5);
+    const margin = 120, cy = margin + gap / 2 + Math.random() * (H - 2 * margin - gap - 60);
+    const w = 118;
+    pipes.push({ x: W + 40, w, top: cy - gap / 2, bot: cy + gap / 2, passed: false });
+    if (Math.random() < 0.75) presents.push({ x: W + 40 + w / 2, y: cy + (Math.random() - 0.5) * gap * 0.35, got: false, spin: Math.random() * 6 });
+  }
+  function spawnCrow() {
+    crows.push({ x: W + 80, baseY: 160 + Math.random() * (H - 360), y: 0, phase: Math.random() * 6, v: speed * (1.25 + Math.random() * 0.3), flap: 0 });
+  }
+
+  function flap() {
+    if (state !== 'play' || dying) return;
+    bird.vy = FLAP; bird.wing = 1; flutter();
+  }
+
+  function circleRect(cx, cy, r, x, y, w, h) {
+    const nx = Math.max(x, Math.min(cx, x + w)), ny = Math.max(y, Math.min(cy, y + h));
+    return (cx - nx) ** 2 + (cy - ny) ** 2 < r * r;
+  }
+
+  function die() {
+    if (dying) return;
+    dying = 0.001; musicStop(); bump();
+    if (score > best) { best = score; store.set('robin-best', String(best)); }
+    try { window.__track && window.__track('game-over'); } catch (e) {}
+    setTimeout(() => {
+      state = 'over';
+      document.getElementById('finalScore').textContent = score;
+      document.getElementById('bestScore').textContent = best;
+      showBooks();
+      document.getElementById('over').hidden = false;
+      document.getElementById('score').hidden = true;
+    }, 850);
+  }
+
+  function update(dt) {
+    for (const f of flakes) { f.y += f.v * dt; f.s += dt; if (f.y > H + 10) { f.y = -10; f.x = Math.random(); } }
+    bird.wing = Math.max(0, bird.wing - dt * 5);
+    if (state !== 'play') { bird.y = H * 0.45 + Math.sin(performance.now() / 400) * 18; return; }
+    if (dying) { bird.vy += GRAV * dt; bird.y += bird.vy * dt; bird.rot = Math.min(1.4, bird.rot + dt * 4); return; }
+    speed = Math.min(430, 250 + score * 6);
+    bird.vy += GRAV * dt; bird.y += bird.vy * dt; bird.rot = Math.max(-0.45, Math.min(0.9, bird.vy / 1100));
+    if (bird.y < 50) { bird.y = 50; if (bird.vy < 0) bird.vy = 0; }   // soft ceiling: kid-friendly, no death at the top
+    if (bird.y > H - 40) die();
+    spawnIn -= dt; if (spawnIn <= 0) { spawnPipe(); spawnIn = 440 / speed + 0.55; }
+    crowIn -= dt; if (crowIn <= 0 && score >= 3) { spawnCrow(); crowIn = 3.2 + Math.random() * 3.5 - Math.min(1.5, score * 0.04); }
+    for (const p of pipes) {
+      p.x -= speed * dt;
+      if (!p.passed && p.x + p.w < bird.x) { p.passed = true; score++; document.getElementById('score').textContent = score; }
+      const r = BIRD_R * 0.82;   // forgiving hitbox
+      if (circleRect(bird.x, bird.y, r, p.x + 10, -2000, p.w - 20, p.top + 2000) || circleRect(bird.x, bird.y, r, p.x + 14, p.bot, p.w - 28, 4000)) die();
+    }
+    pipes = pipes.filter(p => p.x + p.w > -60);
+    for (const b of crows) {
+      b.x -= b.v * dt; b.phase += dt * 3; b.y = b.baseY + Math.sin(b.phase) * 55; b.flap += dt * 12;
+      if ((bird.x - b.x) ** 2 + (bird.y - b.y) ** 2 < (BIRD_R * 0.8 + 26) ** 2) die();
+    }
+    crows = crows.filter(b => b.x > -120);
+    for (const c of presents) {
+      c.x -= speed * dt; c.spin += dt * 3;
+      if (!c.got && (bird.x - c.x) ** 2 + (bird.y - c.y) ** 2 < (BIRD_R + 30) ** 2) { c.got = true; score++; document.getElementById('score').textContent = score; chime(); }
+    }
+    presents = presents.filter(c => c.x > -80 && !c.got);
+  }
+
+  function drawBg() {
+    const img = IMG.background;
+    if (!img.complete || !img.naturalWidth) { ctx.fillStyle = '#13264d'; ctx.fillRect(0, 0, W, H); return; }
+    // one still backdrop (no mirrored copy, so only one moon); framed so the moon stays in view on narrow phones
+    const bh = H, bw = img.naturalWidth * (H / img.naturalHeight);
+    if (bw <= W) { ctx.drawImage(img, 0, 0, W, Math.max(H, W * img.naturalHeight / img.naturalWidth)); return; }
+    const off = Math.max(0, Math.min(bw - W, bw * MOON_X - W * 0.8));
+    ctx.drawImage(img, -off, 0, bw, bh);
+  }
+  function drawPipe(p) {
+    const ch = IMG.chimney, tr = IMG.tree;
+    // top chimney: image anchored at its bottom (the pot) on the gap edge, extends up off-screen
+    if (ch.naturalWidth) { const w = p.w * 1.08, h = Math.max(ch.naturalHeight * (w / ch.naturalWidth), p.top + 40); ctx.drawImage(ch, p.x - p.w * 0.04, p.top - h, w, h); }
+    else { ctx.fillStyle = '#8a4a3a'; ctx.fillRect(p.x, 0, p.w, p.top); }
+    if (tr.naturalWidth) { const w = p.w * 2.7, h = Math.max(tr.naturalHeight * (w / tr.naturalWidth), H - p.bot + 40); ctx.drawImage(tr, p.x + p.w / 2 - w / 2, p.bot - 18, w, h); }
+    else { ctx.fillStyle = '#1f6b3a'; ctx.fillRect(p.x, p.bot, p.w, H - p.bot); }
+  }
+  function draw() {
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    drawBg();
+    pipes.forEach(drawPipe);
+    for (const c of presents) { if (IMG.present.naturalWidth) { ctx.save(); ctx.translate(c.x, c.y); ctx.rotate(Math.sin(c.spin) * 0.3); const cw = 74, chh = cw * IMG.present.naturalHeight / IMG.present.naturalWidth; ctx.drawImage(IMG.present, -cw / 2, -chh / 2, cw, chh); ctx.restore(); } }
+    for (const b of crows) { if (IMG.crow.naturalWidth) { const sy = 0.78 + Math.abs(Math.sin(b.flap)) * 0.3; ctx.save(); ctx.translate(b.x, b.y); ctx.scale(1, sy); const bw2 = 116, bh2 = bw2 * IMG.crow.naturalHeight / IMG.crow.naturalWidth; ctx.drawImage(IMG.crow, -bw2 / 2, -bh2 / 2, bw2, bh2); ctx.restore(); } }
+    if (IMG.robin.naturalWidth) { ctx.save(); ctx.translate(bird.x, bird.y); ctx.rotate(bird.rot); ctx.scale(1, 1 - bird.wing * 0.12); ctx.globalAlpha = dying ? 0.85 : 1; const gw = 104, gh = gw * IMG.robin.naturalHeight / IMG.robin.naturalWidth; ctx.drawImage(IMG.robin, -gw / 2, -gh / 2, gw, gh); ctx.restore(); }
+    ctx.fillStyle = 'rgba(244,248,255,.85)';
+    for (const f of flakes) { ctx.beginPath(); ctx.arc(f.x * W + Math.sin(f.s) * 12, f.y, f.r, 0, 6.3); ctx.fill(); }
+  }
+  function loop(t) {
+    const dt = Math.min(0.033, (t - (lastT || t)) / 1000); lastT = t;
+    update(dt); draw(); requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  window.__robin = () => ({ state, y: bird.y, vy: bird.vy, score, gaps: pipes.filter(p => p.x + p.w > bird.x - 40).slice(0, 1).map(p => [p.top, p.bot, p.x]) });   // for automated play-testing
+
+  function startGame() {
+    reset(); state = 'play';
+    document.getElementById('start').hidden = true; document.getElementById('over').hidden = true;
+    document.getElementById('score').hidden = false;
+    musicStop(); musicPlay();
+    try { window.__track && window.__track('game-start'); } catch (e) {}
+    flap();
+  }
+
+  /* ---------- input ---------- */
+  document.getElementById('playBtn').addEventListener('click', e => { e.stopPropagation(); startGame(); });
+  document.getElementById('againBtn').addEventListener('click', e => { e.stopPropagation(); startGame(); });
+  cv.addEventListener('pointerdown', e => { e.preventDefault(); flap(); });
+  addEventListener('keydown', e => {
+    if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); if (state === 'play') flap(); else startGame(); }
+  });
+  document.getElementById('mute').addEventListener('click', e => { e.stopPropagation(); setMuted(!muted); });
+  document.getElementById('full').addEventListener('click', e => {
+    e.stopPropagation();
+    const d = document.documentElement;
+    if (!document.fullscreenElement) (d.requestFullscreen || d.webkitRequestFullscreen || (() => {})).call(d);
+    else (document.exitFullscreen || document.webkitExitFullscreen || (() => {})).call(document);
+  });
+  setMuted(muted);
+  document.getElementById('bestStart').textContent = best ? `Your best so far: ${best}` : '';
+})();
+</script>
+<script src="../track.js" defer></script>
+</body>
+</html>
