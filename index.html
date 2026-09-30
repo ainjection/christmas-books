@@ -95,6 +95,18 @@ h1 span{color:var(--red);text-shadow:0 0 24px rgba(215,38,61,.6),0 4px 0 #3a0610
 .card .buy{font-size:.85rem;font-weight:800;color:#fff;background:var(--red);padding:8px 16px;border-radius:999px;text-decoration:none}
 .card .dl{font-size:.85rem;font-weight:800;color:var(--ink);border:1px solid rgba(182,196,224,.45);padding:7px 14px;border-radius:999px;text-decoration:none}
 .card .dl:hover{border-color:var(--gold);color:var(--gold)}
+/* seek & find game */
+.sf-layer{position:absolute;inset:0;z-index:3;transform:rotate(1.5deg);cursor:crosshair;touch-action:manipulation}
+.sf-layer svg{width:100%;height:100%;display:block}
+.sf-ring{fill:none;stroke:#2f8f4e;stroke-width:6}
+.sf-ring.sf-hint{stroke:var(--red);stroke-dasharray:10 8;animation:sfpulse 1s ease-in-out infinite alternate}
+.sf-ring.miss{stroke:#d7263d;stroke-width:4;animation:sffade .6s forwards}
+.sf-tick{fill:#2f8f4e;opacity:.28}
+@keyframes sfpulse{from{stroke-width:5;opacity:.6}to{stroke-width:9;opacity:1}}
+@keyframes sffade{to{opacity:0}}
+.sf-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.sf-help{font-size:.9rem;color:var(--muted);margin-top:8px}
+.sfstat{text-align:left;font-size:1.2rem;margin-top:8px}
 .flipper{position:relative;aspect-ratio:760/983;max-width:460px;justify-self:center;width:100%}
 .flipper img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:8px;background:#fff;box-shadow:0 30px 60px rgba(0,0,0,.6);opacity:0;transform:rotate(-2deg) scale(.96);transition:opacity .5s,transform .5s}
 .flipper img.on{opacity:1;transform:rotate(1.5deg)}
@@ -202,9 +214,13 @@ h1 span{color:var(--red);text-shadow:0 0 24px rgba(215,38,61,.6),0 4px 0 #3a0610
   <section class="chapter" id="elves">
     <div class="split">
       <div class="chapter-head"><div class="kicker">For little elves, ages 4 to 8</div><h2>Can you find <em>all 12?</em></h2>
-        <p>Fifty busy Christmas scenes, from Santa's workshop and the reindeer stable to building a snowman, each hiding twelve little things to spot. Find them, tick them off, then colour the whole page.</p></div>
+        <p>Fifty busy Christmas scenes, from Santa's workshop and the penguins on the ice to building a snowman, each hiding twelve little things to spot. Find them, tick them off, then colour the whole page.</p>
+        <div class="sf-bar"><span class="pill">Found <b id="sfcount">0/12</b></span><button class="round" id="sfreset" type="button" aria-label="Start this page again" title="Start again">&#8635;</button></div>
+        <p class="sf-help">Play it here: tap the picture when you spot something. Stuck? Tap an object in the bottom row and it will light up where it hides.</p>
+        <div class="status sfstat" id="sfstatus" role="status"></div></div>
       <div class="flipper" id="flipper">
-        <img class="on" src="samples/sf-workshop.jpg" alt="Seek and find page: Santa's workshop"><img src="samples/sf-reindeer.jpg" alt="Seek and find page: the reindeer stable"><img src="samples/sf-snowman.jpg" alt="Seek and find page: building a snowman">
+        <img class="on" src="samples/sf-workshop.jpg" alt="Seek and find page: Santa's workshop"><img src="samples/sf-penguins.jpg" alt="Seek and find page: penguins on the ice"><img src="samples/sf-snowman.jpg" alt="Seek and find page: building a snowman">
+        <div class="sf-layer" id="sfLayer"><svg viewBox="0 0 760 984" id="sfSvg" aria-label="Tap to find the hidden objects"></svg></div>
         <div class="ctrl"><button class="round" data-dir="-1" type="button" aria-label="Previous page">&lsaquo;</button><span id="fliplbl">Page 1 of 3</span><button class="round" data-dir="1" type="button" aria-label="Next page">&rsaquo;</button></div>
       </div>
     </div>
@@ -331,7 +347,39 @@ h1 span{color:var(--red);text-shadow:0 0 24px rgba(215,38,61,.6),0 4px 0 #3a0610
   $$('.card').forEach(c => c.addEventListener('pointerenter', () => voice('elf', 1500)));
   // flipper
   const pages = $$('#flipper img'); let pi = 0;
-  $$('#flipper .round').forEach(b => b.addEventListener('click', () => { pages[pi].classList.remove('on'); pi = (pi + +b.dataset.dir + pages.length) % pages.length; pages[pi].classList.add('on'); $('#fliplbl').textContent = `Page ${pi + 1} of ${pages.length}`; Snd.isOn() && Snd.pop(); }));
+  $$('#flipper .round').forEach(b => b.addEventListener('click', () => { pages[pi].classList.remove('on'); pi = (pi + +b.dataset.dir + pages.length) % pages.length; pages[pi].classList.add('on'); $('#fliplbl').textContent = `Page ${pi + 1} of ${pages.length}`; Snd.isOn() && Snd.pop(); sfRender(); }));
+  // seek & find game: tap to find, tap the legend for a hint
+  const SF = {"sf-workshop": [["Hammer", [[117, 340], [288, 735], [175, 465]]], ["Toy soldier", [[237, 500]]], ["Paintbrush", [[247, 612], [112, 650]]], ["Gear", [[348, 692], [575, 533], [605, 543], [637, 552], [668, 560], [702, 570]]], ["Teddy bear", [[570, 310], [685, 375], [190, 505]]], ["Drum", [[207, 230], [630, 380], [657, 520]]], ["Ball", [[117, 230], [160, 225], [635, 450], [125, 790]]], ["Present", [[75, 210], [682, 457], [205, 765], [320, 780], [687, 750], [447, 530]]], ["Screwdriver", [[147, 345], [150, 408], [585, 635], [210, 462]]], ["Bell", [[430, 270]]], ["Star", [[472, 327]]], ["Santa's list", [[425, 460], [430, 575]]]], "sf-penguins": [["Penguin", [[140, 445], [130, 360], [258, 405], [345, 340], [545, 395], [480, 450], [630, 580], [360, 470], [310, 610], [360, 600], [440, 655], [120, 760]]], ["Fish", [[430, 275], [640, 485], [595, 520], [680, 525], [545, 580], [230, 755]]], ["Igloo", [[160, 330], [250, 380]]], ["Snowflake", [[375, 515], [175, 210], [250, 245], [345, 235], [395, 210], [460, 220], [75, 290], [295, 290], [550, 700], [683, 205], [370, 695]]], ["Scarf", [[435, 465], [505, 475], [250, 460], [80, 760]]], ["Sled", [[160, 575]]], ["Star", [[90, 665], [250, 565]]], ["Bucket", [[280, 705]]], ["Ball", [[485, 725]]], ["Woolly hat", [[385, 775], [430, 650], [410, 415], [285, 570]]], ["Iceberg", [[530, 315], [90, 455]]], ["Bell", [[630, 720]]]], "sf-snowman": [["Carrot", [[105, 465], [360, 430]]], ["Button", [[115, 320], [362, 500], [362, 520], [362, 540], [490, 550], [490, 590]]], ["Scarf", [[190, 410], [410, 510], [525, 565], [180, 610]]], ["Woolly hat", [[270, 440], [260, 550], [520, 500]]], ["Twig", [[445, 470], [528, 480]]], ["Broom", [[470, 420], [575, 470]]], ["Mitten", [[580, 240], [275, 640]]], ["Snowball", [[170, 505], [295, 655]]], ["Bucket", [[625, 650]]], ["Robin", [[670, 305], [190, 345], [230, 345], [295, 345]]], ["Pipe", [[640, 455]]], ["Big button", [[115, 320], [362, 500], [362, 520], [362, 540], [490, 550], [490, 590]]]]}, SFLEG = {"sf-workshop": [[48, 855, 55, 90], [103, 855, 55, 90], [159, 855, 55, 90], [214, 855, 55, 90], [269, 855, 55, 90], [325, 855, 55, 90], [380, 855, 55, 90], [435, 855, 55, 90], [491, 855, 55, 90], [546, 855, 55, 90], [601, 855, 55, 90], [657, 855, 55, 90]], "sf-penguins": [[55, 875, 54, 70], [109, 875, 54, 70], [163, 875, 54, 70], [218, 875, 54, 70], [272, 875, 54, 70], [326, 875, 54, 70], [380, 875, 54, 70], [434, 875, 54, 70], [488, 875, 54, 70], [542, 875, 54, 70], [597, 875, 54, 70], [651, 875, 54, 70]], "sf-snowman": [[48, 790, 111, 72], [159, 790, 111, 72], [269, 790, 111, 72], [380, 790, 111, 72], [491, 790, 111, 72], [601, 790, 111, 72], [48, 866, 111, 74], [159, 866, 111, 74], [269, 866, 111, 74], [380, 866, 111, 74], [491, 866, 111, 74], [601, 866, 111, 74]]};
+  const sfState = {}, sfSvg = $('#sfSvg'), NS = 'http://www.w3.org/2000/svg';
+  const sfKey = () => pages[pi].getAttribute('src').split('/').pop().replace('.jpg', '');
+  const sfPage = () => { const k = sfKey(); return sfState[k] || (sfState[k] = { found: new Set(), used: new Set(), marks: [], hint: null }); };
+  const sfRing = (x, y, r, cls) => { const c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', r); c.setAttribute('class', cls); sfSvg.appendChild(c); return c; };
+  function sfRender() {
+    const k = sfKey(), st = sfPage(), items = SF[k];
+    sfSvg.innerHTML = '';
+    st.marks.forEach(([x, y]) => sfRing(x, y, 30, 'sf-ring'));
+    st.found.forEach(i => { const [x, y, w, h] = SFLEG[k][i], r = document.createElementNS(NS, 'rect'); r.setAttribute('x', x + 3); r.setAttribute('y', y); r.setAttribute('width', w - 6); r.setAttribute('height', h); r.setAttribute('rx', 10); r.setAttribute('class', 'sf-tick'); sfSvg.appendChild(r); });
+    if (st.hint != null) items[st.hint][1].forEach(([x, y]) => sfRing(x, y, 34, 'sf-ring sf-hint'));
+    $('#sfcount').textContent = `${st.found.size}/12`;
+    $('#sfstatus').textContent = st.found.size === 12 ? 'All 12 found! Try the next page.' : '';
+  }
+  sfSvg.addEventListener('click', e => {
+    const pt = sfSvg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(sfSvg.getScreenCTM().inverse());
+    const k = sfKey(), st = sfPage(), items = SF[k];
+    const li = SFLEG[k].findIndex(([x, y, w, h]) => p.x >= x && p.x <= x + w && p.y >= y && p.y <= y + h);
+    if (li >= 0) { st.hint = st.hint === li ? null : li; sfRender(); Snd.isOn() && Snd.pop();
+      $('#sfstatus').textContent = st.found.has(li) ? `You already found the ${items[li][0].toLowerCase()}!` : `Look for the glowing circle: the ${items[li][0].toLowerCase()}.`; return; }
+    let best = null;
+    items.forEach(([, pts], i) => { if (st.found.has(i)) return; pts.forEach(([x, y]) => { const key = x + ',' + y; if (st.used.has(key)) return;
+      const d = Math.hypot(p.x - x, p.y - y); if (d < 48 && (!best || d < best.d)) best = { i, x, y, d, key }; }); });
+    if (best) { st.found.add(best.i); st.used.add(best.key); st.marks.push([best.x, best.y]); if (st.hint === best.i) st.hint = null; sfRender();
+      $('#sfstatus').textContent = st.found.size === 12 ? 'All 12 found! Try the next page.' : `Found the ${items[best.i][0].toLowerCase()}!`;
+      if (Snd.isOn()) st.found.size === 12 ? Snd.bells() : Snd.pop();
+    } else { const m = sfRing(p.x, p.y, 22, 'sf-ring miss'); setTimeout(() => m.remove(), 650); }
+  });
+  $('#sfreset').addEventListener('click', () => { delete sfState[sfKey()]; sfRender(); });
+  sfRender();
+  window.__sf = { SF, SFLEG, state: sfState, key: sfKey };
   // mosaic: a Christmas tree
   const ART = ['1111111331111111', '1111111331111111', '1111111221111111', '1111112222111111', '1111122542211111', '1111222222221111', '1111125222521111', '1111222222222111', '1112222542222211', '1122252222252211', '1122222222222221', '1222542222542222', '2222222222222222', '1111111441111111', '1111111441111111', '1111166666611111'];
   const COL = { 1: ['#13264d', 'midnight blue'], 2: ['#2f8f4e', 'tree green'], 3: ['#ffd23f', 'star gold'], 4: ['#8a5a36', 'trunk brown'], 5: ['#d7263d', 'bauble red'], 6: ['#c0392b', 'pot red'] };
